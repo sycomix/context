@@ -231,8 +231,7 @@ def main():
                 streamer.end_stream()
                 rprint("\n")
 
-                code_blocks = extract_code_blocks(full_response)
-                if code_blocks:
+                if code_blocks := extract_code_blocks(full_response):
                     while True:
                         user_response = input("Run code? (y/n): ")
                         if user_response not in ["y", "n"]:
