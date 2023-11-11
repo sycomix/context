@@ -54,10 +54,10 @@ def retrieve_context(query, openai_api_key, k=10, filters=None):
     # First, we query the API
     responses = retrieve(query, openai_api_key=openai_api_key, k=k, filters=filters)
 
-    # Then, we build the prompt_with_context string
-    prompt_with_context = ""
-    for response in responses:
-        prompt_with_context += f"\n\n### Context {response['metadata']['url']} ###\n{response['metadata']['text']}"
+    prompt_with_context = "".join(
+        f"\n\n### Context {response['metadata']['url']} ###\n{response['metadata']['text']}"
+        for response in responses
+    )
     return {"role": "user", "content": prompt_with_context}
 
 
@@ -189,9 +189,7 @@ def get_remote_chat_response(messages, model="gpt-4-1106-preview"):
         )
 
         for chunk in response:
-            current_context = chunk.choices[0].delta.content
-            yield current_context
-
+            yield chunk.choices[0].delta.content
     except openai.AuthenticationError as error:
         print("401 Authentication Error:", error)
         raise Exception("Invalid OPENAI_API_KEY. Please re-run with a valid key.")

@@ -11,7 +11,7 @@ class TextStream:
         self.live.start()
 
     def print_stream(self, message):
-        markdown = Markdown(message.strip() + "●")
+        markdown = Markdown(f"{message.strip()}●")
         panel = Panel(markdown, box=MINIMAL)
         self.live.update(panel)
         self.live.refresh()
